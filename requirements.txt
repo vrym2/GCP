@@ -1,0 +1,12 @@
+aiohttp
+brotlipy
+colorama
+colorlog
+google-cloud-storage
+grpcio
+pip-chill
+pyopenssl
+pysocks
+pytest
+pyu2f
+typing-extensions
