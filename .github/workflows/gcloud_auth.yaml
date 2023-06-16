@@ -12,13 +12,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        workload_identity_provider: 'projects/863040563308/locations/global/workloadIdentityPools/otd-app'
-        service_account: 'otd-app@otd-ml.iam.gserviceaccount.com'    
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -29,6 +22,13 @@ jobs:
       run: |     
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1.0.0'
+      with:
+        workload_identity_provider: 'projects/863040563308/locations/global/workloadIdentityPools/otd-app'
+        service_account: 'otd-app@otd-ml.iam.gserviceaccount.com'    
     
     - name: Run test
       env: 
