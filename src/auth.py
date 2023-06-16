@@ -3,7 +3,10 @@ from google.api_core.exceptions import BadRequest
 
 class gcloud_auth:
     """Functions related to authentication"""
-    def __init__(self, log: isinstance = None) -> None:
+    def __init__(
+            self, 
+            log: isinstance = None,
+            project_id:str = None) -> None:
         """Initiating the variables
 
         Args:
@@ -11,20 +14,15 @@ class gcloud_auth:
         """
         self.log = log
 
-    def authenticate(self, project_id:str = None):
-        """Authenticate Google Cloud
-
-        Args:
-            project_id: Project ID
-        """
+    def authenticate(self):
+        """Authenticate Google Cloud"""
         try:
-            self.storage_client = storage.Client(project = project_id)
+            self.storage_client = storage.Client()
             self.buckets = self.storage_client.list_buckets()
             self.bucket_names = [bucket.name for bucket in self.buckets]
-            return self.bucket_names
+            self.log.info("Authentication successful")
         except BadRequest as b:
             self.log.debug("There was a problem with authentication")
             self.log.debug(f"{b}")
-        else:
-            self.log.info("Authentication successful")
+
 
