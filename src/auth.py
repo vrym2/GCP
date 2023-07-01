@@ -1,11 +1,16 @@
+import click
 from google.cloud import storage
 from google.api_core.exceptions import BadRequest
+
+import logging
+from logging import config
+config.fileConfig("logger.ini")
 
 class gcloud_auth:
     """Functions related to authentication"""
     def __init__(
             self, 
-            log: isinstance = None,
+            log: isinstance = logging,
             project_id:str = None) -> None:
         """Initiating the variables
 
@@ -20,9 +25,17 @@ class gcloud_auth:
             self.storage_client = storage.Client()
             self.buckets = self.storage_client.list_buckets()
             self.bucket_names = [bucket.name for bucket in self.buckets]
+            self.log.info(f"List of buckets: {self.bucket_names}")
             self.log.info("Authentication successful")
         except BadRequest as b:
             self.log.debug("There was a problem with authentication")
             self.log.debug(f"{b}")
 
+@click.command()
+@click.option("--project_id", help = "Enter the project ID")
+def main(project_id:str = None):
+    gcloud = gcloud_auth(project_id = project_id)
+    gcloud.authenticate()
 
+if __name__==  "__main__":
+    main()
